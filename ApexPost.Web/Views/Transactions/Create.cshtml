@@ -1,0 +1,56 @@
+@model ApexPost.Web.Models.TransactionCreateViewModel
+@{
+    ViewData["Title"] = "New Transaction";
+}
+
+<h2>New counter transaction</h2>
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label asp-for="BranchCode" class="form-label">Branch Code</label>
+            <input asp-for="BranchCode" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label asp-for="CounterId" class="form-label">Counter</label>
+            <input asp-for="CounterId" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label asp-for="ClerkId" class="form-label">Clerk ID</label>
+            <input asp-for="ClerkId" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label asp-for="Description" class="form-label">Description</label>
+            <input asp-for="Description" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label asp-for="LineType" class="form-label">Line Type</label>
+            <select asp-for="LineType" class="form-select">
+                <option value="Retail">Retail</option>
+                <option value="Shipping">Shipping</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label asp-for="Quantity" class="form-label">Quantity</label>
+            <input asp-for="Quantity" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label asp-for="UnitPrice" class="form-label">Unit Price</label>
+            <input asp-for="UnitPrice" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label asp-for="TaxAmount" class="form-label">Tax</label>
+            <input asp-for="TaxAmount" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label asp-for="PaymentMethod" class="form-label">Payment</label>
+            <select asp-for="PaymentMethod" class="form-select">
+                <option value="Card">Card</option>
+                <option value="Cash">Cash</option>
+                <option value="DigitalWallet">Digital Wallet</option>
+            </select>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Create transaction</button>
+</form>

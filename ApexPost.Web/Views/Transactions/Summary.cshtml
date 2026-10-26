@@ -1,0 +1,12 @@
+@model ApexPost.Domain.CounterTransaction
+@{
+    ViewData["Title"] = "Transaction summary";
+}
+
+<h2>Transaction @Model.TransactionId</h2>
+<ul>
+    <li>Branch: @Model.BranchCode.Value</li>
+    <li>Counter: @Model.CounterId</li>
+    <li>Status: @Model.Status</li>
+    <li>Grand total: @Model.GrandTotal</li>
+</ul>

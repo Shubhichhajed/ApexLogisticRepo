@@ -1,0 +1,21 @@
+@model ApexPost.Web.Models.ReportViewModel
+@{
+    ViewData["Title"] = "Reports";
+}
+
+<h2>@Model.Title</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr><th>Title</th><th>Value</th><th>Grouping</th></tr>
+    </thead>
+    <tbody>
+    @foreach (var row in Model.Rows)
+    {
+        <tr>
+            <td>@row.Title</td>
+            <td>@row.Value</td>
+            <td>@row.Grouping</td>
+        </tr>
+    }
+    </tbody>
+</table>

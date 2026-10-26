@@ -1,0 +1,24 @@
+@model IEnumerable<ApexPost.Domain.Product>
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h2>Retail catalogue and stock</h2>
+<table class="table table-striped">
+    <thead>
+        <tr><th>SKU</th><th>Product</th><th>Category</th><th>Price</th><th>Tax</th><th>Available</th></tr>
+    </thead>
+    <tbody>
+    @foreach (var product in Model)
+    {
+        <tr>
+            <td>@product.Sku.Value</td>
+            <td>@product.Name</td>
+            <td>@product.Category</td>
+            <td>@product.UnitPrice</td>
+            <td>@product.TaxCategory</td>
+            <td>@ViewBag.Branch.GetStock(product.Sku)</td>
+        </tr>
+    }
+    </tbody>
+</table>

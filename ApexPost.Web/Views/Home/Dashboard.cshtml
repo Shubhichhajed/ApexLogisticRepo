@@ -1,0 +1,69 @@
+@model ApexPost.Web.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="text-center mb-4">
+    <h1 class="display-6">@Model.Branch.Name branch dashboard</h1>
+    <p class="text-muted">@Model.Branch.Code.Value • @Model.Branch.Region</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Branch</h5>
+                <p class="card-text">@Model.Branch.Name</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Status</h5>
+                <p class="card-text">@(Model.Branch.IsActive ? "Open" : "Closed")</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Low stock</h5>
+                <p class="card-text">@Model.LowStockProducts.Count()</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Sales</h5>
+                <p class="card-text">@Model.RecentTransactions.Count</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 class="mt-4">Alerts</h3>
+<ul class="list-group">
+    @foreach (var alert in Model.Alerts)
+    {
+        <li class="list-group-item">@alert</li>
+    }
+</ul>
+
+<h3 class="mt-4">Low stock products</h3>
+<table class="table table-striped">
+    <thead>
+        <tr><th>SKU</th><th>Name</th><th>Stock</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.LowStockProducts)
+        {
+            <tr>
+                <td>@product.Sku.Value</td>
+                <td>@product.Name</td>
+                <td>@Model.Branch.GetStock(product.Sku)</td>
+            </tr>
+        }
+    </tbody>
+</table>
