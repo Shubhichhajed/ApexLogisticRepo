@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using ApexPost.Web.Attributes;
 
 namespace ApexPost.Web.Middleware;
@@ -39,8 +41,7 @@ public sealed class ApiKeyValidationMiddleware
             return;
         }
 
-        var constantTimeEquals = string.Equals(suppliedKey, configuredKey, StringComparison.Ordinal);
-        if (!constantTimeEquals)
+        if (!IsMatchingApiKey(suppliedKey, configuredKey))
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             await context.Response.WriteAsJsonAsync(new { error = "Invalid API key." });
@@ -48,5 +49,18 @@ public sealed class ApiKeyValidationMiddleware
         }
 
         await next(context);
+    }
+
+    private static bool IsMatchingApiKey(string suppliedKey, string configuredKey)
+    {
+        var suppliedBytes = Encoding.UTF8.GetBytes(suppliedKey.Trim());
+        var configuredBytes = Encoding.UTF8.GetBytes(configuredKey.Trim());
+
+        if (suppliedBytes.Length != configuredBytes.Length)
+        {
+            return false;
+        }
+
+        return CryptographicOperations.FixedTimeEquals(suppliedBytes, configuredBytes);
     }
 }

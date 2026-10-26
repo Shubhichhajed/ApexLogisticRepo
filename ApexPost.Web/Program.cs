@@ -10,6 +10,15 @@ using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddProblemDetails();
+
+builder.Services.AddHsts(options =>
+{
+    options.MaxAge = TimeSpan.FromDays(365);
+    options.IncludeSubDomains = true;
+    options.Preload = true;
+});
+
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.AddService<AuditActionFilter>();
@@ -100,14 +109,18 @@ if (!app.Environment.IsDevelopment())
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+    RequireHeaderSymmetry = false,
+    ForwardLimit = 2
 });
 
+app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("PartnerWidget");
 app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseMiddleware<SecurityHeadersMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<MaintenanceModeMiddleware>();
 app.UseWhen(context => context.Request.Path.StartsWithSegments("/admin", StringComparison.OrdinalIgnoreCase) || context.Request.Path.StartsWithSegments("/integration", StringComparison.OrdinalIgnoreCase), branch =>
 {
