@@ -43,14 +43,14 @@ http://localhost:5050
 
 ## Demo login accounts
 
-The app seeds staff accounts in `SeedDataProvider.GetStaff()`. You can sign in with any active staff email, for example:
+The app seeds staff accounts in `SeedDataProvider.GetStaff()`. Use any active staff email and the shared demo password below, for example:
 
 - `alicia.moore@apexpost.test` – Counter Clerk
 - `carmen.lee@apexpost.test` – Branch Manager
 - `darren.ross@apexpost.test` – Auditor
 - `elena.park@apexpost.test` – Administrator
 
-A login uses the email address only for this demo build.
+Demo password for all seeded staff accounts: `ApexPost123!`
 
 ## Configure the integration API key
 
@@ -100,7 +100,7 @@ Login (demo):
 ```bash
 curl -c cookies.txt -X POST http://localhost:5050/login \
   -H "Content-Type: application/x-www-form-urlencoded" \
-  --data "Email=alicia.moore@apexpost.test"
+  --data "Email=alicia.moore@apexpost.test&Password=ApexPost123!"
 ```
 
 Protected partner endpoint example:

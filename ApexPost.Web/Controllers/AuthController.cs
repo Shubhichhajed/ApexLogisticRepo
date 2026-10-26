@@ -37,10 +37,10 @@ public sealed class AuthController : Controller
             return View(model);
         }
 
-        var staff = await authenticationService.AuthenticateAsync(model.Email, cancellationToken);
+        var staff = await authenticationService.AuthenticateAsync(model.Email, model.Password, cancellationToken);
         if (staff is null)
         {
-            ModelState.AddModelError(string.Empty, "Invalid or inactive staff account.");
+            ModelState.AddModelError(string.Empty, "Invalid email, password, or inactive staff account.");
             return View(model);
         }
 

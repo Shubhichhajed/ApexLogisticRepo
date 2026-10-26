@@ -229,34 +229,49 @@ public sealed class SeedDataProvider
 
     public static IReadOnlyCollection<Staff> GetStaff()
     {
+        const string defaultPassword = "ApexPost123!";
+
         return new[]
         {
-            new Staff("ST-1001", "Alicia Moore", "alicia.moore@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-001"), true),
-            new Staff("ST-1002", "Ben Patel", "ben.patel@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-001"), true),
-            new Staff("ST-1003", "Carmen Lee", "carmen.lee@apexpost.test", StaffRole.BranchManager, BranchCode.Parse("BR-001"), true),
-            new Staff("ST-1004", "Darren Ross", "darren.ross@apexpost.test", StaffRole.Auditor, BranchCode.Parse("BR-001"), true),
-            new Staff("ST-1005", "Elena Park", "elena.park@apexpost.test", StaffRole.Administrator, BranchCode.Parse("BR-001"), true),
-            new Staff("ST-2001", "Frank Hall", "frank.hall@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-002"), true),
-            new Staff("ST-2002", "Grace Nguyen", "grace.nguyen@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-002"), true),
-            new Staff("ST-2003", "Hugo Singh", "hugo.singh@apexpost.test", StaffRole.BranchManager, BranchCode.Parse("BR-002"), true),
-            new Staff("ST-2004", "Ingrid Mills", "ingrid.mills@apexpost.test", StaffRole.Auditor, BranchCode.Parse("BR-002"), true),
-            new Staff("ST-2005", "Jack Ortiz", "jack.ortiz@apexpost.test", StaffRole.Administrator, BranchCode.Parse("BR-002"), true),
-            new Staff("ST-3001", "Kira Cole", "kira.cole@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-003"), true),
-            new Staff("ST-3002", "Luca Green", "luca.green@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-003"), true),
-            new Staff("ST-3003", "Maya Diaz", "maya.diaz@apexpost.test", StaffRole.BranchManager, BranchCode.Parse("BR-003"), true),
-            new Staff("ST-3004", "Noah Reed", "noah.reed@apexpost.test", StaffRole.Auditor, BranchCode.Parse("BR-003"), true),
-            new Staff("ST-3005", "Olivia Price", "olivia.price@apexpost.test", StaffRole.Administrator, BranchCode.Parse("BR-003"), true),
-            new Staff("ST-4001", "Priya Shaw", "priya.shaw@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-004"), true),
-            new Staff("ST-4002", "Quinn Frost", "quinn.frost@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-004"), true),
-            new Staff("ST-4003", "Ravi Shah", "ravi.shah@apexpost.test", StaffRole.BranchManager, BranchCode.Parse("BR-004"), true),
-            new Staff("ST-4004", "Sonia Cruz", "sonia.cruz@apexpost.test", StaffRole.Auditor, BranchCode.Parse("BR-004"), true),
-            new Staff("ST-4005", "Tariq Ali", "tariq.ali@apexpost.test", StaffRole.Administrator, BranchCode.Parse("BR-004"), true),
-            new Staff("ST-5001", "Uma Bell", "uma.bell@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-005"), false),
-            new Staff("ST-5002", "Victor Moss", "victor.moss@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-005"), false),
-            new Staff("ST-5003", "Willa Stone", "willa.stone@apexpost.test", StaffRole.BranchManager, BranchCode.Parse("BR-005"), false),
-            new Staff("ST-5004", "Xander King", "xander.king@apexpost.test", StaffRole.Auditor, BranchCode.Parse("BR-005"), false),
-            new Staff("ST-5005", "Yara Finch", "yara.finch@apexpost.test", StaffRole.Administrator, BranchCode.Parse("BR-005"), false)
+            CreateStaff("ST-1001", "Alicia Moore", "alicia.moore@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-001"), true, defaultPassword),
+            CreateStaff("ST-1002", "Ben Patel", "ben.patel@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-001"), true, defaultPassword),
+            CreateStaff("ST-1003", "Carmen Lee", "carmen.lee@apexpost.test", StaffRole.BranchManager, BranchCode.Parse("BR-001"), true, defaultPassword),
+            CreateStaff("ST-1004", "Darren Ross", "darren.ross@apexpost.test", StaffRole.Auditor, BranchCode.Parse("BR-001"), true, defaultPassword),
+            CreateStaff("ST-1005", "Elena Park", "elena.park@apexpost.test", StaffRole.Administrator, BranchCode.Parse("BR-001"), true, defaultPassword),
+            CreateStaff("ST-2001", "Frank Hall", "frank.hall@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-002"), true, defaultPassword),
+            CreateStaff("ST-2002", "Grace Nguyen", "grace.nguyen@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-002"), true, defaultPassword),
+            CreateStaff("ST-2003", "Hugo Singh", "hugo.singh@apexpost.test", StaffRole.BranchManager, BranchCode.Parse("BR-002"), true, defaultPassword),
+            CreateStaff("ST-2004", "Ingrid Mills", "ingrid.mills@apexpost.test", StaffRole.Auditor, BranchCode.Parse("BR-002"), true, defaultPassword),
+            CreateStaff("ST-2005", "Jack Ortiz", "jack.ortiz@apexpost.test", StaffRole.Administrator, BranchCode.Parse("BR-002"), true, defaultPassword),
+            CreateStaff("ST-3001", "Kira Cole", "kira.cole@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-003"), true, defaultPassword),
+            CreateStaff("ST-3002", "Luca Green", "luca.green@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-003"), true, defaultPassword),
+            CreateStaff("ST-3003", "Maya Diaz", "maya.diaz@apexpost.test", StaffRole.BranchManager, BranchCode.Parse("BR-003"), true, defaultPassword),
+            CreateStaff("ST-3004", "Noah Reed", "noah.reed@apexpost.test", StaffRole.Auditor, BranchCode.Parse("BR-003"), true, defaultPassword),
+            CreateStaff("ST-3005", "Olivia Price", "olivia.price@apexpost.test", StaffRole.Administrator, BranchCode.Parse("BR-003"), true, defaultPassword),
+            CreateStaff("ST-4001", "Priya Shaw", "priya.shaw@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-004"), true, defaultPassword),
+            CreateStaff("ST-4002", "Quinn Frost", "quinn.frost@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-004"), true, defaultPassword),
+            CreateStaff("ST-4003", "Ravi Shah", "ravi.shah@apexpost.test", StaffRole.BranchManager, BranchCode.Parse("BR-004"), true, defaultPassword),
+            CreateStaff("ST-4004", "Sonia Cruz", "sonia.cruz@apexpost.test", StaffRole.Auditor, BranchCode.Parse("BR-004"), true, defaultPassword),
+            CreateStaff("ST-4005", "Tariq Ali", "tariq.ali@apexpost.test", StaffRole.Administrator, BranchCode.Parse("BR-004"), true, defaultPassword),
+            CreateStaff("ST-5001", "Uma Bell", "uma.bell@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-005"), false, defaultPassword),
+            CreateStaff("ST-5002", "Victor Moss", "victor.moss@apexpost.test", StaffRole.CounterClerk, BranchCode.Parse("BR-005"), false, defaultPassword),
+            CreateStaff("ST-5003", "Willa Stone", "willa.stone@apexpost.test", StaffRole.BranchManager, BranchCode.Parse("BR-005"), false, defaultPassword),
+            CreateStaff("ST-5004", "Xander King", "xander.king@apexpost.test", StaffRole.Auditor, BranchCode.Parse("BR-005"), false, defaultPassword),
+            CreateStaff("ST-5005", "Yara Finch", "yara.finch@apexpost.test", StaffRole.Administrator, BranchCode.Parse("BR-005"), false, defaultPassword)
         };
+    }
+
+    private static Staff CreateStaff(
+        string staffId,
+        string name,
+        string email,
+        StaffRole role,
+        BranchCode homeBranch,
+        bool isActive,
+        string password)
+    {
+        var (hash, salt) = PasswordHasher.HashPassword(password);
+        return new Staff(staffId, name, email, role, homeBranch, isActive, hash, salt);
     }
 
     public static IReadOnlyCollection<Product> GetProducts()

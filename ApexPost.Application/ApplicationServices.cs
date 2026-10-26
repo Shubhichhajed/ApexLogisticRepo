@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using ApexPost.Domain;
 
 namespace ApexPost.Application;
@@ -80,6 +81,45 @@ public sealed class PricingService
     }
 }
 
+public static class PasswordHasher
+{
+    private const int SaltSize = 16;
+    private const int KeySize = 32;
+    private const int Iterations = 200_000;
+
+    public static (string Hash, string Salt) HashPassword(string password)
+    {
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            throw new ArgumentException("Password cannot be empty.", nameof(password));
+        }
+
+        var saltBytes = RandomNumberGenerator.GetBytes(SaltSize);
+        var hashBytes = Rfc2898DeriveBytes.Pbkdf2(password, saltBytes, Iterations, HashAlgorithmName.SHA256, KeySize);
+        return (Convert.ToBase64String(hashBytes), Convert.ToBase64String(saltBytes));
+    }
+
+    public static bool VerifyPassword(string password, string storedHash, string storedSalt)
+    {
+        if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(storedHash) || string.IsNullOrWhiteSpace(storedSalt))
+        {
+            return false;
+        }
+
+        try
+        {
+            var saltBytes = Convert.FromBase64String(storedSalt);
+            var expectedHash = Convert.FromBase64String(storedHash);
+            var actualHash = Rfc2898DeriveBytes.Pbkdf2(password, saltBytes, Iterations, HashAlgorithmName.SHA256, KeySize);
+            return CryptographicOperations.FixedTimeEquals(actualHash, expectedHash);
+        }
+        catch (FormatException)
+        {
+            return false;
+        }
+    }
+}
+
 public sealed class AuthenticationService
 {
     private readonly IStaffRepository staffRepository;
@@ -90,9 +130,22 @@ public sealed class AuthenticationService
     }
 
     public async Task<Staff?> AuthenticateAsync(string email, CancellationToken cancellationToken = default)
+        => await AuthenticateAsync(email, string.Empty, cancellationToken);
+
+    public async Task<Staff?> AuthenticateAsync(string email, string password, CancellationToken cancellationToken = default)
     {
         var staff = await staffRepository.GetByEmailAsync(email, cancellationToken);
-        return staff is { IsActive: true } ? staff : null;
+        if (staff is null || !staff.IsActive)
+        {
+            return null;
+        }
+
+        if (string.IsNullOrWhiteSpace(staff.PasswordHash) || string.IsNullOrWhiteSpace(staff.PasswordSalt))
+        {
+            return string.IsNullOrWhiteSpace(password) ? staff : null;
+        }
+
+        return PasswordHasher.VerifyPassword(password, staff.PasswordHash, staff.PasswordSalt) ? staff : null;
     }
 }
 

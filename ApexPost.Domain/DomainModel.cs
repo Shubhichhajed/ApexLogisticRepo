@@ -201,7 +201,9 @@ public sealed record Staff(
     string Email,
     StaffRole Role,
     BranchCode HomeBranch,
-    bool IsActive)
+    bool IsActive,
+    string PasswordHash = "",
+    string PasswordSalt = "")
 {
     public string StaffId { get; init; } = StaffId;
     public string Name { get; init; } = Name;
@@ -209,6 +211,8 @@ public sealed record Staff(
     public StaffRole Role { get; init; } = Role;
     public BranchCode HomeBranch { get; init; } = HomeBranch;
     public bool IsActive { get; init; } = IsActive;
+    public string PasswordHash { get; init; } = PasswordHash;
+    public string PasswordSalt { get; init; } = PasswordSalt;
 }
 
 public sealed record Product(

@@ -25,7 +25,16 @@ public static class SeedDataBootstrapper
             var fileInfo = new FileInfo(filePath);
             if (fileInfo.Length > 0)
             {
-                return;
+                if (typeof(T) != typeof(Staff))
+                {
+                    return;
+                }
+
+                var contents = await File.ReadAllTextAsync(filePath, cancellationToken);
+                if (!string.IsNullOrWhiteSpace(contents) && contents.Contains("PasswordHash", StringComparison.Ordinal) && contents.Contains("PasswordSalt", StringComparison.Ordinal))
+                {
+                    return;
+                }
             }
         }
 
